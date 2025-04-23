@@ -45,7 +45,7 @@ def show_welcome():
                 st.experimental_rerun()
         
     with col2:
-         st.image("data/church_quiz.jpg", use_container_width=True)
+         st.image("data/church_quiz.jpg", use_column_width=True)
     
     # Footer
     st.markdown("---")
