@@ -198,6 +198,9 @@ def show_all_scores():
         
         # Sort by score (highest first)
         all_scores = all_scores.sort_values(["score", "date"], ascending=[False, True])
+
+        # Keep only the highest score per user
+        all_scores = all_scores.sort_values("score", ascending=False).drop_duplicates(subset=["user_id"])
         
         # Display scores with ability to edit
         with st.expander("All Scores", expanded=True):
