@@ -16,10 +16,16 @@ def show_leaderboard():
     if scores_df.empty:
         st.info("No scores yet. Be the first to play!")
     else:
-        # Merge scores with usernames
-        leaderboard = scores_df.merge(users_df[["id", "name"]], left_on="user_id", right_on="id")
+        # Sort scores by score (descending) and date (ascending)
+        sorted_scores = scores_df.sort_values(["score", "date"], ascending=[False, True])
         
-        # Sort by score (descending) and date (for tiebreakers)
+        # Get the highest score per user
+        best_scores = sorted_scores.groupby("user_id", as_index=False).first()
+
+        # Merge with usernames
+        leaderboard = best_scores.merge(users_df[["id", "name"]], left_on="user_id", right_on="id")
+
+        # Sort final leaderboard again in case grouping affected order
         leaderboard = leaderboard.sort_values(["score", "date"], ascending=[False, True])
         
         # Take top 10
