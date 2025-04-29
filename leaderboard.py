@@ -27,6 +27,8 @@ def show_leaderboard():
 
         # Sort final leaderboard again in case grouping affected order
         leaderboard = leaderboard.sort_values(["score", "date"], ascending=[False, True])
+        # Keep only the highest score per user
+        leaderboard = leaderboard.sort_values("score", ascending=False).drop_duplicates(subset=["user_id"])
         
         # Take top 10
         top_10 = leaderboard.head(10)
