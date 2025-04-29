@@ -15,7 +15,7 @@ st.set_page_config(
     page_title="Church Music Quiz Game",
     page_icon="🎵",
     layout="centered",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
 # Initialize admin user
