@@ -40,6 +40,12 @@ def show_login():
 def show_register():
     st.title("Create an Account")
     
+    users = load_users()
+    if len(users) >= 20:
+        st.warning("Registration limit reached. No more users can be registered.")
+        st.button("Back to Welcome Page", on_click=lambda: set_page("welcome"))
+        return  # Exit the function to prevent registration form from showing
+    
     with st.form("register_form"):
         username = st.text_input("Username")
         password = st.text_input("Password", type="password")
@@ -51,21 +57,20 @@ def show_register():
                 st.error("Username and password cannot be empty")
             elif password != confirm_password:
                 st.error("Passwords do not match")
+            elif username in users["name"].values:
+                st.error("Username already exists")
             else:
-                users = load_users()
-                if username in users["name"].values:
-                    st.error("Username already exists")
-                else:
-                    # Register new user
-                    save_user(username, password)
-                    st.success("Registration successful! Please login.")
-                    st.session_state.page = "login"
-                    st.experimental_rerun()
-    
+                # Register new user
+                save_user(username, password)
+                st.success("Registration successful! Please login.")
+                st.session_state.page = "login"
+                st.experimental_rerun()
+
     st.markdown("---")
     st.markdown("Already have an account?")
     st.button("Login", on_click=lambda: set_page("login"))
     st.button("Back to Welcome Page", on_click=lambda: set_page("welcome"))
+
 
 def show_forgot_password():
     st.title("Reset Password")
